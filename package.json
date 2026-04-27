@@ -1,0 +1,12 @@
+﻿{
+  "name": "team-task-manager",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server/src/server.js"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}
