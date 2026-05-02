@@ -9,6 +9,7 @@ import {
   verifyPassword,
 } from "./auth.js";
 import { createId, getStore, isPersistenceEnabled, nowIso, todayIso, updateStore } from "./db.js";
+import { config } from "./env.js";
 import { HttpError, json, noContent, readJsonBody, sendError } from "./http.js";
 import {
   TASK_PRIORITIES,
@@ -369,12 +370,16 @@ async function handleSignup(ctx) {
 
   const now = nowIso();
   const userCount = store.users.length;
+  
+  const isAdminByEmail = config.adminEmail && payload.email === config.adminEmail;
+  const isFirstUser = userCount === 0;
+
   const user = {
     id: createId("usr"),
     name: payload.name,
     email: payload.email,
     passwordHash: hashPassword(payload.password),
-    role: userCount === 0 ? "ADMIN" : "MEMBER",
+    role: (isAdminByEmail || isFirstUser) ? "ADMIN" : "MEMBER",
     createdAt: now,
     updatedAt: now,
   };
